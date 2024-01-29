@@ -34,7 +34,12 @@
                 <span class="ui green label">Complete</span>
                 {% endif %}
 
-                <a class="ui blue button" href="/update/{{ todo.id }}">Update</a>  
+                
+                {% comment %} <form method="post" action="{% url 'todo:update_todo' pk=todo.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="completed" value="True">
+                    <button type="submit" class="ui blue button">Complete</button>
+                </form> {% endcomment %}
                 <a class="ui red button" href="/delete/{{ todo.id }}">Delete</a>
 
             </div>
