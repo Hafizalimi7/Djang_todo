@@ -1,17 +1,15 @@
-from django.shortcuts import render , redirect, reverse
-from django.views.generic import TemplateView, UpdateView, CreateView, ListView 
+from django.shortcuts import reverse
+from django.views.generic import UpdateView, CreateView, ListView, DetailView, DeleteView
 from .models import TodoMod
 from django.urls import reverse_lazy
 
 # Create your views here.
 class Index(ListView):
   template_name = "base.html"
-  queryset = TodoMod.objects.filter(completed=True)
-  todo_names = TodoMod.objects.values_list('completed', flat=True)
-
-  print(todo_names)
+  queryset = TodoMod.objects.all()
   context_object_name = "todo_list"
 
+  
 class AddTask(CreateView):
   model = TodoMod
   fields = ['name','task']
@@ -24,11 +22,21 @@ class UpdateTask(UpdateView):
   fields = ['completed']
   template_name = "base.html"
   success_url = reverse_lazy("todo:home")
-  # def get_queryset(self):
-  #   query_set = TodoMod.objects.filter(completed=True, pk=self.kwargs['pk'])
-  #   print("2", query_set)
-  #   return query_set 
-    
+  
+class UserOwnList(DetailView):
+  model = TodoMod
+  template_name = "selftask.html"
+  
+  def get_success_url(self):
+    pk_value = self.object.pk
+    return reverse("todo:solo", kwargs={'pk': pk_value})
+
+class DeleteTask(DeleteView):
+  model = TodoMod
+  template_name = "base.html"
+  fields = "__all__"  
+  success_url = reverse_lazy("todo:home")
+ 
 
   
       

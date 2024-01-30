@@ -30,25 +30,28 @@
 
                 {% if todo.completed == False %}
                 <span class="ui gray label">Not Complete</span>
-                {% else %}
+                {% elif todo.completed == True %}
                 <span class="ui green label">Complete</span>
                 {% endif %}
 
                 
-                {% comment %} <form method="post" action="{% url 'todo:update_todo' pk=todo.id %}">
+                <form method="post" action="{% url 'todo:update' pk=todo.id %}">
                     {% csrf_token %}
-                    <input type="hidden" name="completed" value="True">
+                    <input type="hidden" name="completed" value= True >
                     <button type="submit" class="ui blue button">Complete</button>
-                </form> {% endcomment %}
-                <a class="ui red button" href="/delete/{{ todo.id }}">Delete</a>
+                </form> 
+
+               <form method="post" action="{% url 'todo:delete' pk=todo.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="completed">
+                    <button type="submit" class="ui red button">Delete</button>
+                </form>  
+                {% comment %} <a class="ui blue button" href="/update/{{ todo.id }}">Update</a> 
+                <a class="ui red button" href="/delete/{{ todo.id }}">Delete</a>  {% endcomment %}
 
             </div>
             {% endfor %}
-
         </div>
-
-
     </body>
-
 </html>
 
